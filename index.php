@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="5-Bit Computer Emulator Debugging">
+    <meta name="description" content="5-Bit Computer Emulator with Control Panel Layout">
     <meta name="keywords" content="JavaScript, Emulator, CPU, Memory, Graphics">
     <meta name="author" content="Your Name">
-    <title>5-Bit Computer Emulator Debugging</title>
+    <title>5-Bit Computer Emulator - Control Panel Layout</title>
     <style>
-
         body {
             font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #1e1e2f, #3e3e6b, #1e1e2f);
@@ -22,26 +21,46 @@
             background-size: cover;
         }
         .panel {
-            background: rgba(45, 45, 85, 0.9);
+            background: rgba(45, 45, 85, 0.95);
             border-radius: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            padding: 30px;
-            width: 700px;
-            max-width: 90%;
-            position: relative;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            width: 900px;
+            max-width: 95%;
+            display: grid;
+            grid-template-columns: 2fr 3fr;
+            grid-template-rows: auto auto 1fr;
+            gap: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            overflow: hidden;
         }
         h1 {
+            grid-column: span 2;
             font-weight: 300;
             text-align: center;
             color: #c0caf5;
             margin-bottom: 20px;
+            font-size: 28px;
         }
-        textarea {
-            width: 100%;
-            height: 120px;
-            margin-top: 10px;
+        .section {
+            background: rgba(30, 30, 50, 0.85);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .program-editor {
+            grid-column: 1 / 2;
+            grid-row: 2 / 4;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .program-editor textarea {
+            flex-grow: 1;
+            margin-bottom: 10px;
             background: #222244;
             color: #ffffff;
             border: 1px solid #555577;
@@ -51,7 +70,10 @@
             font-size: 14px;
             box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.2);
         }
-        button {
+        .control-buttons {
+            text-align: center;
+        }
+        .control-buttons button {
             margin: 10px 5px;
             padding: 12px 20px;
             border: none;
@@ -60,29 +82,55 @@
             color: #ffffff;
             font-size: 16px;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
-        button:hover {
+        .control-buttons button:hover {
             background: linear-gradient(135deg, #6651e6, #5096c4);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
         }
-        canvas {
+        .display-panel {
+            grid-column: 2 / 3;
+            grid-row: 2 / 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .display-panel canvas {
             border: 1px solid #ffffff;
             border-radius: 10px;
-            margin-top: 20px;
-            display: block;
             background: radial-gradient(circle at 50% 50%, #1e1e2f, #000);
+            margin-top: 10px;
+        }
+        .info-panel {
+            grid-column: 2 / 3;
+            grid-row: 3 / 4;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
         }
         .registers, .status {
-            margin-top: 10px;
-            text-align: left;
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(30, 30, 50, 0.8);
             font-size: 14px;
             color: #b3c0e6;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            flex: 1;
+            margin-right: 10px;
+        }
+        .status {
+            text-align: right;
+            margin-right: 0;
         }
         #logo {
-            font-size: 36px;
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px;
             text-align: center;
             color: #ff9800;
-            margin-top: 20px;
             transition: opacity 1s ease, transform 1s ease;
             opacity: 0;
             transform: translateY(-20px);
@@ -94,14 +142,23 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>5-Bit Computer Emulator Debugging</h1>
-        <textarea id="programEditor" placeholder="Enter your assembly code here..."></textarea>
-        <button onclick="loadProgram()">Load Program</button>
-        <button onclick="startEmulator()">Run Program</button>
-        <canvas id="screen" width="640" height="480"></canvas>
-        <div class="registers" id="registers">Registers: </div>
-        <div class="status" id="status">Status: Ready</div>
+    <div style="width:unset !important;" class="panel">
+        <h1>5-Bit Computer Emulator</h1>
+        <div class="section program-editor">
+            <textarea id="programEditor" placeholder="Enter your assembly code here..."></textarea>
+            <div class="control-buttons">
+                <button onclick="loadProgram()">Load Program</button>
+                <button onclick="startEmulator()">Run Program</button>
+            </div>
+        </div>
+        <div class="section display-panel">
+            <canvas id="screen" width="640" height="480"></canvas>
+        </div>
+        <div class="section info-panel">
+            <div class="registers" id="registers">Registers: </div>
+            <div class="status" id="status">Status: Ready</div>
+        </div>
+        <div id="logo">STARTUP COMPLETE</div>
     </div>
 
     <script>

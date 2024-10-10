@@ -8,52 +8,88 @@
     <meta name="author" content="Your Name">
     <title>5-Bit Computer Emulator Debugging</title>
     <style>
+
         body {
             font-family: 'Arial', sans-serif;
-            background: #282c34;
+            background: linear-gradient(135deg, #1e1e2f, #3e3e6b, #1e1e2f);
             color: #ffffff;
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            flex-direction: column;
+            background-size: cover;
         }
-        canvas {
-            border: 1px solid #ffffff;
-            margin-top: 10px;
+        .panel {
+            background: rgba(45, 45, 85, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            padding: 30px;
+            width: 700px;
+            max-width: 90%;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
         }
-        .container {
+        h1 {
+            font-weight: 300;
             text-align: center;
-            max-width: 800px;
+            color: #c0caf5;
+            margin-bottom: 20px;
         }
         textarea {
             width: 100%;
-            height: 100px;
+            height: 120px;
             margin-top: 10px;
-            background: #444;
-            color: #f0f0f0;
-            border: 1px solid #555;
-            padding: 10px;
+            background: #222244;
+            color: #ffffff;
+            border: 1px solid #555577;
+            border-radius: 10px;
+            padding: 15px;
             font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.2);
         }
         button {
-            margin-top: 10px;
-            padding: 10px;
+            margin: 10px 5px;
+            padding: 12px 20px;
             border: none;
             border-radius: 5px;
-            background: #76c7c0;
+            background: linear-gradient(135deg, #7861f9, #60a7d4);
             color: #ffffff;
+            font-size: 16px;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: background 0.3s ease;
         }
         button:hover {
-            background: #60a7a0;
+            background: linear-gradient(135deg, #6651e6, #5096c4);
+        }
+        canvas {
+            border: 1px solid #ffffff;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: block;
+            background: radial-gradient(circle at 50% 50%, #1e1e2f, #000);
         }
         .registers, .status {
             margin-top: 10px;
             text-align: left;
+            font-size: 14px;
+            color: #b3c0e6;
+        }
+        #logo {
+            font-size: 36px;
+            text-align: center;
+            color: #ff9800;
+            margin-top: 20px;
+            transition: opacity 1s ease, transform 1s ease;
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        .show-logo {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
@@ -232,6 +268,7 @@
             startupSequence();
         }
 
+
         function startupSequence() {
             const canvas = document.getElementById('screen');
             const ctx = canvas.getContext('2d');
@@ -257,9 +294,10 @@
         }
 
         function showLogo() {
-            document.getElementById('logo').style.display = 'block';
+            const logo = document.getElementById('logo');
+            logo.classList.add('show-logo');
             setTimeout(() => {
-                document.getElementById('logo').style.display = 'none';
+                logo.classList.remove('show-logo');
                 renderRetroScreen();
             }, 2000);
         }
